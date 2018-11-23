@@ -22,47 +22,71 @@
           text-decoration: none;
         }
       </style>
-    <img class="icon" id="icon" src$="{{_iconStyle.url}}"></img>
+
+    <template is="dom-if" if="[[!clusterType]]">
+      <img class="icon" id="icon" src$="{{_iconStyle.url}}">
+    </template>
+    <template is="dom-if" if="[[_isEqual(clusterType, 'drivers')]]">
+      <img class="icon" id="icon2" src$="{{_iconStyle.driversUrl}}">
+    </template>
+    <template is="dom-if" if="[[_isEqual(clusterType, 'shipments')]]">
+      <img class="icon" id="icon3" src$="{{_iconStyle.shipmentsUrl}}">
+    </template>
+
     <div class="text" id="text">{{_computeText(markers)}}</div>
+
   </template>
 </dom-module>
 <script>
   /* global Markerclusterer */
   (function() {
     var BASE_IMAGE_URL = 'https://raw.githubusercontent.com/googlemaps/js-marker-clusterer/gh-pages/images/';
+    var DRIVERS_CLUSTER_IMAGE_URL = '/android_asset/www/images/drivers/';
+    var SHIPMENTS_CLUSTER_IMAGE_URL = '/android_asset/www/images/shipments/';
+
     var DEFAULT_STYLES = [
       {
         url: BASE_IMAGE_URL + 'm1.png',
-        width: '53px',
-        height: '52px',
+        driversUrl: DRIVERS_CLUSTER_IMAGE_URL + 'm1.png',
+        shipmentsUrl: SHIPMENTS_CLUSTER_IMAGE_URL + 'm1.png',
+        width: '46px',
+        height: '46px',
         textColor: 'black',
         textSize: '11px'
       },
       {
         url: BASE_IMAGE_URL + 'm2.png',
-        width: '56px',
-        height: '56px',
+        driversUrl: DRIVERS_CLUSTER_IMAGE_URL + 'm2.png',
+        shipmentsUrl: SHIPMENTS_CLUSTER_IMAGE_URL + 'm2.png',
+        width: '50px',
+        height: '50px',
         textColor: 'black',
         textSize: '11px'
       },
       {
         url: BASE_IMAGE_URL + 'm3.png',
-        width: '66px',
-        height: '66px',
+        driversUrl: DRIVERS_CLUSTER_IMAGE_URL + 'm3.png',
+        shipmentsUrl: SHIPMENTS_CLUSTER_IMAGE_URL + 'm3.png',
+        width: '53px',
+        height: '53px',
         textColor: 'black',
         textSize: '12px'
       },
       {
         url: BASE_IMAGE_URL + 'm4.png',
-        width: '78px',
-        height: '78px',
+        driversUrl: DRIVERS_CLUSTER_IMAGE_URL + 'm4.png',
+        shipmentsUrl: SHIPMENTS_CLUSTER_IMAGE_URL + 'm4.png',
+        width: '56px',
+        height: '56px',
         textColor: 'black',
         textSize: '13px'
       },
       {
         url: BASE_IMAGE_URL +'m5.png',
-        width: '90px',
-        height: '90px',
+        driversUrl: DRIVERS_CLUSTER_IMAGE_URL + 'm5.png',
+        shipmentsUrl: SHIPMENTS_CLUSTER_IMAGE_URL + 'm5.png',
+        width: '66px',
+        height: '66px',
         textColor: 'black',
         textSize: '14px'
       }
@@ -84,6 +108,7 @@
            */
           styles :  {
             type:Array,
+            notify: true,
             value: function() {return DEFAULT_STYLES;}
           },
           /**
@@ -92,6 +117,10 @@
           _iconStyle : {
             type: Object,
             value: function() {return {};}
+          },
+          clusterType: {
+            type: String,
+            notify: true
           }
         }
       }
@@ -144,6 +173,10 @@
           this.style.left = '-'+iconOffset[1];
           this.style.top = '-'+iconOffset[0];
           this.$.text.style.position='absolute';
+      }
+
+      _isEqual(a, b) {
+        return a == b;
       }
     }
 
