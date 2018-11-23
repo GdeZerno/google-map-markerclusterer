@@ -147,6 +147,9 @@
               type: Array,
               value: null,
               observer:'_changeStyles'
+            },
+            clusterType: {
+              notify: true
             }
           }
         }
@@ -182,6 +185,7 @@
           }
           else {
             clusterIconTemplateContent = document.createElement('google-map-defaulticon');
+            clusterIconTemplateContent.setAttribute('cluster-type', this.clusterType);
           }
           this._clusterIconTemplate = document.createElement('google-map-markercluster');
           this._clusterIconTemplate.appendChild(clusterIconTemplateContent);
